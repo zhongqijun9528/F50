@@ -1,10 +1,14 @@
 import Vue from 'vue'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import login from './components/login/login'
 import favouriteManagement from './components/favouriteManagement/favouriteManagement'
 import commodityManagement from './components/commodityManagement/commodityManagement'
+import storeHead from "./components/storeManagement/storeHead.vue"
 import serviceManagement from './components/serviceManagement/serviceManagement'
 import storeManagement from './components/storeManagement/storeManagement'
 import userManagement from './components/userManagement/userManagement'
@@ -19,9 +23,13 @@ Vue.component('storeManagement',storeManagement)
 Vue.component('userManagement',userManagement)
 Vue.component('orderManagement',orderManagement)
 
+// 门店管理组件
+Vue.component('storeHead',storeHead)
+
 
 
 Vue.config.productionTip = false
+Vue.use(ElementUI);
 
 new Vue({
   router,
