@@ -54,7 +54,7 @@ export default {
   methods: {
     login() {
         console.log(this.userAcount)
-      this.$router.push("/login");
+      this.$router.push("/");
     },
     chechuserAcount(){
         // if(this.userAcount==)

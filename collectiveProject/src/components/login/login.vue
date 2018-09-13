@@ -32,7 +32,7 @@
                 this.$router.push("/plathome");
             },
              reg(){
-                this.$router.push("/");
+                this.$router.push("/reg");
             }
         }
     }
