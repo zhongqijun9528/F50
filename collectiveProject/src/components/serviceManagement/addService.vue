@@ -8,7 +8,9 @@
                 </el-form-item>
                 <el-form-item label="服务类别：">
                     <el-select v-model="form.serviceType" placeholder="请选择服务类别">
-                        <el-option label="狗狗" value="cat"></el-option>
+                        <el-option label="洗护" value="洗护"></el-option>
+                        <el-option label="美容" value="美容"></el-option>
+                        <el-option label="寄养" value="寄养"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="排期：">
@@ -16,10 +18,10 @@
                 </el-form-item>
                 <el-form-item label="适用规格：">
                     <el-checkbox-group v-model="form.serviceCanFor">
-                        <el-checkbox label="迷你犬" name="type"></el-checkbox>
-                        <el-checkbox label="小型犬" name="type"></el-checkbox>
-                        <el-checkbox label="中型犬" name="type"></el-checkbox>
-                        <el-checkbox label="大型犬" name="type"></el-checkbox>
+                        <el-checkbox label="迷你" name="type"></el-checkbox>
+                        <el-checkbox label="小型" name="type"></el-checkbox>
+                        <el-checkbox label="中型" name="type"></el-checkbox>
+                        <el-checkbox label="大型" name="type"></el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
                 <el-form-item label="服务规格：">
@@ -55,11 +57,6 @@ const { mapState, mapMutations, mapActions } = createNamespacedHelpers(
   "service"
 );
 export default {
-  //   props: {
-  //     dialogFormVisible: {
-  //       default: false
-  //     }
-  //   },
   data() {
     return {
       form: {
@@ -78,7 +75,6 @@ export default {
   methods: {
     ...mapActions(["asyncAddService"]),
     addService() {
-      console.log(123);
       const service = {
         serviceName: this.form.serviceName,
         serviceType: this.form.serviceType,
@@ -91,6 +87,9 @@ export default {
       };
       console.log(service);
       this.asyncAddService(service);
+    },
+    cancel(formName){
+        this.dialogFormVisible = false;
     }
   }
 };

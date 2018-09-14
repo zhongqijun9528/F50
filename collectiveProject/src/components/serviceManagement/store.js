@@ -10,8 +10,7 @@ export default {
   },
   mutations: {
     getService(state, payload) {
-      console.log(state, payload);
-      Object.assign(state, payload);
+      state.rows = payload;
     }
   },
   actions: {
@@ -25,25 +24,22 @@ export default {
         },
         body: JSON.stringify(params)
       }).then(response => {
-        return response.json();
+        return response.text();
       });
       console.log(data);
+      return data;
     },
-    
+
     // 获取
-    async asyncGetService(context, { curpage, eachpage } = {}) {
-      const data = await fetch(
-        `/services?page=${curpage || context.state.curpage}&rows=${eachpage ||
-          context.state.eachpage}`,
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
+    async asyncGetService(context) {
+      const data = await fetch("/services", {
+        headers: {
+          "Content-Type": "application/json"
         }
-      ).then(response => {
+      }).then(response => {
         return response.json();
       });
-      console.log(data);
+      // console.log(data);
       context.commit("getService", data);
     }
   }
