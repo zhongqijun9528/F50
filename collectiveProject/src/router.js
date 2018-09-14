@@ -10,15 +10,37 @@ import storeManagement from "./components/storeManagement/storeManagement.vue";
 import userManagement from "./components/userManagement/userManagement.vue";
 import orderManagement from "./components/orderManagement/orderManagement.vue";
 
-Vue.use(Router);
-// Vue.use(Login)
+import reg from "./components/login/reg.vue"
+import plathome from "./components/login/plathome.vue"
+
+
+Vue.use(Router)
+
 
 export default new Router({
   routes: [
     {
-      path: "/",
-      name: "login",
-      component: Login,
+      path: '/',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/reg',
+      name: 'reg',
+      component: reg
+    },
+    
+    {
+      path: '/plathome',
+      name: 'plathome',
+      component: plathome,
+      children:[{
+        path:"/userManagement",
+        name:"userManagement",
+        component: userManagement,
+      }]
+
+     
     },
     {
       path: "/commodityManagement",
@@ -40,11 +62,11 @@ export default new Router({
       name: "storeManagement",
       component: storeManagement
     },
-    {
-      path: "/userManagement",
-      name: "userManagement",
-      component: userManagement
-    },
+    // {
+    //   path: "/userManagement",
+    //   name: "userManagement",
+    //   component: userManagement
+    // },
     {
       path: "/orderManagement",
       name: "orderManagement",

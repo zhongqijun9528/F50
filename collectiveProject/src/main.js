@@ -14,6 +14,7 @@ import storeManagement from './components/storeManagement/storeManagement'
 import userManagement from './components/userManagement/userManagement'
 import orderManagement from './components/orderManagement/orderManagement'
 
+
 // 服务管理
 import addService from "./components/serviceManagement/addService";
 Vue.component('addService',addService);
@@ -32,7 +33,7 @@ Vue.component('storeHead',storeHead)
 
 
 Vue.config.productionTip = false
-Vue.use(ElementUI);
+
 
 new Vue({
   router,
