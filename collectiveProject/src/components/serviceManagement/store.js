@@ -10,13 +10,12 @@ export default {
   },
   mutations: {
     getService(state, payload) {
-      state.rows = payload;
+      Object.assign(state, payload);
     }
   },
   actions: {
     // 新增
     async asyncAddService(context, params) {
-      console.log(params);
       const data = await fetch("/services", {
         method: "POST",
         headers: {
@@ -26,21 +25,51 @@ export default {
       }).then(response => {
         return response.text();
       });
-      console.log(data);
-      return data;
     },
 
-    // 获取
-    async asyncGetService(context) {
-      const data = await fetch("/services", {
+    // 查询
+    async asyncGetService(context, { curpage, eachpage, type, text } = {}) {
+      // console.log(curpage, eachpage, type, text);
+      // console.log(context.state.curpage, context.state.eachpage);
+      const data = await fetch(
+        `/services?page=${curpage || context.state.curpage}&rows=${eachpage ||
+          context.state.eachpage}&type=${type ? type : ""}&text=${
+          text ? text : ""
+        }`,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      ).then(response => {
+        return response.json();
+      });
+      context.commit("getService", data);
+    },
+
+    // 删除
+    async asyncDeleteService(context, id) {
+      await fetch(`/services/${id}`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json"
         }
       }).then(response => {
-        return response.json();
+        return response.text();
       });
-      // console.log(data);
-      context.commit("getService", data);
+    },
+
+    // 修改
+    async asyncUpdateService(context, params) {
+      const data = await fetch(`/services/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(params)
+      }).then(response => {
+        return response.text();
+      });
     }
   }
 };
