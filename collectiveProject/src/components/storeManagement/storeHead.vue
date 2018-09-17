@@ -1,10 +1,10 @@
 <template>
 <div>
 <el-button-group style="display:flex">
-    <el-button  @click="addStore = true" type="primary">新增门店<i class="el-icon-plus el-icon--right"></i></el-button>
-     <el-input style="margin-left:20px;width:300px" placeholder="请输入内容" >
-        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+     <el-input v-model="text" style="margin-left:20px;width:300px" placeholder="门店查询" >
+        <i slot="prefix" @click="asyncGetStores({shopName:text,search})" class="el-input__icon el-icon-search"></i>
     </el-input>
+      <el-button style="margin-left:10px"  @click="addStore = true" type="primary">新增门店<i class="el-icon-plus el-icon--right"></i></el-button>
 </el-button-group>
 <!-- 新增门店 -->
 <el-dialog fullscreen title="新增门店" :visible.sync="addStore">
@@ -53,24 +53,19 @@ const { mapActions, mapState, mapMutations } = createNamespacedHelpers(
   "storeManagement"
 );
 export default {
+  name:"storeHead",
   data() {
     return {
+      text:"",
+      search:this,
       addStore: false,
-      shopLicenceNum: "",
       shopName: "",
       shopCorporate: "",
       shopLocation: "",
       shopAdd: "",
       shopTel: "",
       shopImg: "",
-      shopFeature: "",
-      shopEmployee: [
-        {
-          empName: "员工姓名",
-          empLevel: "",
-          empPhone: "12312312312"
-        }
-      ]
+      shopFeature: ""
     };
   },
   methods: {
@@ -157,6 +152,6 @@ export default {
 .avatar {
   width: 178px;
   height: 178px;
-  display: block;
+  display: block; 
 }
 </style>

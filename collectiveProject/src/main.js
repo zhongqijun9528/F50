@@ -10,6 +10,7 @@ import favouriteManagement from './components/favouriteManagement/favouriteManag
 import commodityManagement from './components/commodityManagement/commodityManagement'
 import storeHead from "./components/storeManagement/storeHead.vue"
 import shopEmployee from "./components/storeManagement/shopEmployee.vue"
+import elterStore from "./components/storeManagement/elterStore.vue"
 import serviceManagement from './components/serviceManagement/serviceManagement'
 import storeManagement from './components/storeManagement/storeManagement'
 import userManagement from './components/userManagement/userManagement'
@@ -34,6 +35,7 @@ Vue.component('orderManagement',orderManagement)
 
 // 门店管理组件
 Vue.component('storeHead',storeHead)
+Vue.component('elterStore',elterStore)
 
 
 Vue.config.productionTip = false

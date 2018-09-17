@@ -9,14 +9,27 @@ export default {
     },
     mutations: {
         getStores(state, payload) {
-            Object.assign(state, payload,{rows:payload.rows})
+            Object.assign(state, payload, { rows: payload.rows })
         },
+        setEachPage(state, payload) {
+            state.eachpage = payload;
+        }
     },
     actions: {
-        async asyncGetStores(context, { curpage, eachpage } = {}) {
+        async asyncGetStores(context, { curpage, eachpage, shopName, search } = {}) {
             let page = curpage || context.state.curpage;
             let rows = eachpage || context.state.eachpage;
-            let data = await fetch(`/stores?page=${page}&rows=${rows}`, {
+            if (shopName === "") {
+                search.$message({
+                    message: "查询信息不能为空",
+                    type: "warning"
+                });
+                return;
+            }
+            if (!shopName) {
+                shopName = ""
+            }
+            let data = await fetch(`/stores?page=${page}&rows=${rows}&shopName=${shopName}`, {
                 method: "get",
                 headers: {
                     "Content-type": "application/json"
