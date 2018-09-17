@@ -37,11 +37,6 @@ const { mapState, mapMutations, mapActions } = createNamespacedHelpers(
 
 export default {
   name: "serviceList",
-  //   data(){
-  //       return {
-  //           dialogFormVisible: false,
-  //       }
-  //   },
   created() {
     this.asyncGetService();
   },
