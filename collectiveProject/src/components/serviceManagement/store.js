@@ -11,6 +11,9 @@ export default {
   mutations: {
     getService(state, payload) {
       Object.assign(state, payload);
+    },
+    setEachpage(state, payload) {
+      state.eachpage = payload;
     }
   },
   actions: {
@@ -29,8 +32,6 @@ export default {
 
     // 查询
     async asyncGetService(context, { curpage, eachpage, type, text } = {}) {
-      // console.log(curpage, eachpage, type, text);
-      // console.log(context.state.curpage, context.state.eachpage);
       const data = await fetch(
         `/services?page=${curpage || context.state.curpage}&rows=${eachpage ||
           context.state.eachpage}&type=${type ? type : ""}&text=${

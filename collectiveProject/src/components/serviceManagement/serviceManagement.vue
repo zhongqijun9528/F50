@@ -55,10 +55,12 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["setEachpage"]),
     ...mapActions(["asyncGetService", "asyncDeleteService", "updateBtn"]),
 
     handleSizeChange(val) {
-      this.asyncGetService({ curpage: this.curpage, eachpage: val });
+      this.setEachpage(val);
+      this.asyncGetService();
     },
 
     handleCurrentChange(val) {
@@ -78,8 +80,32 @@ export default {
       if (ids.length == 0) {
         this.$message("请至少选择一条服务！");
       } else {
-        this.asyncDeleteService(ids);
-        this.asyncGetService();
+        this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.asyncDeleteService(ids);
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+              duration: 1000,
+              onClose: val => {
+                if (this.curpage == this.maxpage) {
+                  this.asyncGetService({ curpage: this.maxpage - 1 });
+                } else {
+                  this.asyncGetService();
+                }
+              }
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
       }
     }
   }

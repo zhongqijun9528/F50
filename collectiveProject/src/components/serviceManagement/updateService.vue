@@ -90,7 +90,6 @@ export default {
     ...mapActions(["asyncUpdateService", "asyncGetService"]),
 
     updateBtn() {
-      console.log(this.form);
       if (!this.form._id) {
         this.$message("请选择一条服务进行修改！");
         return;

@@ -71,7 +71,7 @@ export default {
         serviceCanFor: "",
         serviceDetial: "",
         serviceTime: "",
-        serviceLevel: [],
+        serviceLevel: "",
         servicePrice: ""
       },
       dialogFormVisible: false

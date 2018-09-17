@@ -29,7 +29,6 @@ router.get("/", async function(req, res, next) {
 // 删除
 router.delete("/:id", async function(req, res, next) {
   let ids = req.params.id.split(",");
-  console.log(ids);
   for (let item of ids) {
     await client.delete("/services/" + item);
   }

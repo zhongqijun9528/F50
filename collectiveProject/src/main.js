@@ -16,7 +16,6 @@ import storeManagement from './components/storeManagement/storeManagement'
 import userManagement from './components/userManagement/userManagement'
 import orderManagement from './components/orderManagement/orderManagement'
 
-
 // 服务管理
 import addService from "./components/serviceManagement/addService";
 import searchService from "./components/serviceManagement/searchService";
@@ -37,7 +36,6 @@ Vue.component('orderManagement',orderManagement)
 // 门店管理组件
 Vue.component('storeHead',storeHead)
 Vue.component('elterStore',elterStore)
-
 
 
 Vue.config.productionTip = false

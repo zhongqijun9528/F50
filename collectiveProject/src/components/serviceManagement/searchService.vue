@@ -32,8 +32,14 @@ export default {
   methods: {
     ...mapActions(["asyncGetService"]),
     searchBtn() {
-      console.log(this.curpage, this.eachpage);
-      this.asyncGetService({ type: this.type, text: this.text });
+      this.asyncGetService({
+        curpage: 1,
+        eachpage: this.eachpage,
+        type: this.type,
+        text: this.text
+      });
+      this.type = "";
+      this.text = "";
     }
   }
 };
