@@ -12,5 +12,3 @@ export default new Vuex.Store({
     storeManagement
   }
 })
-
-

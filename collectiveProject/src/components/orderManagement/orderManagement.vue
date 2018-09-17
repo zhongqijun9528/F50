@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>订单管理</h1>
     <!-- 查询按钮 -->
     <div style="margin-top: 15px;width:500px">
       <el-input placeholder="请输入内容" v-model="text" class="input-with-select">
