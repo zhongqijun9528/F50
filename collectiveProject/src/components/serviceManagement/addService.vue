@@ -100,6 +100,7 @@ export default {
         type: "success"
       });
       this.dialogFormVisible = false;
+      this.$refs[form].resetFields();
     },
 
     // 取消
