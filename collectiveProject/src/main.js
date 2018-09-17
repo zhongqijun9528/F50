@@ -17,7 +17,11 @@ import orderManagement from './components/orderManagement/orderManagement'
 
 // 服务管理
 import addService from "./components/serviceManagement/addService";
+import searchService from "./components/serviceManagement/searchService";
+import updateService from "./components/serviceManagement/updateService";
 Vue.component('addService',addService);
+Vue.component('searchService',searchService);
+Vue.component('updateService',updateService);
 
 Vue.component('login',login)
 Vue.component('favouriteManagement',favouriteManagement)
