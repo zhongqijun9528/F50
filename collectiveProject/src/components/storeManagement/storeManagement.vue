@@ -1,7 +1,7 @@
 <template>
 <div>
     <storeHead />
-    <el-table :data="rows" style="width: auto">
+    <el-table :data="rows" border style="width: auto">
       <el-table-column prop="shopName" label="店名" width="180"></el-table-column>
       <el-table-column prop="shopCorporate" label="法人代表" width="180"></el-table-column>
       <el-table-column prop="shopTel" label="联系电话" width="180"></el-table-column>
@@ -10,8 +10,8 @@
         <template slot-scope="scope">
             <el-row>
             <!-- 点击弹出门店详情 -->
-            <el-button type="success" row-key  @click="storeDetails(scope.$index, scope.row)"  icon="el-icon-check" circle></el-button>
-            <el-button type="danger" @click="remove(scope.$index, scope.row)" icon="el-icon-delete" circle></el-button>
+            <el-button type="text" size="small" @click="storeDetails(scope.$index, scope.row)">详情</el-button>
+            <el-button type="text" size="small" @click="remove(scope.$index, scope.row)">删除</el-button>
             </el-row>
         </template>
       </el-table-column>
@@ -31,20 +31,32 @@
     <el-table-column label="店员" width="180">
       <template slot-scope="scope">
             <el-row>
-            <shopEmployee  />
+              <!-- 查看店员 -->
+            <shopEmployee :tableData="store" />
             </el-row>
       </template>
     </el-table-column>
     <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">
             <el-row>
-            <el-button type="success" icon="el-icon-edit" circle></el-button>
+              <!-- 修改门店信息 -->
+              <elterStore  :index="index"/>
             </el-row>
         </template>
       </el-table-column>
   </el-table>
 </el-dialog>
-
+<el-pagination
+  @size-change="handleSizeChange"
+  @current-change="handleCurrentChange"
+  style="width:800px;margin: auto;"
+  background
+  :current-page="curpage"
+  :page-sizes="[5, 10, 15, 20]"
+  :page-size="eachpage"
+  layout="total, sizes, prev, pager, next, jumper"
+  :total="total">
+</el-pagination>
 </div>
 </template>
 
@@ -54,27 +66,29 @@ const { mapActions, mapState, mapMutations } = createNamespacedHelpers(
   "storeManagement"
 );
 export default {
-  data(){
+  name: "storeManagement",
+  data() {
     return {
-        IsStoreDetails: false,
-        store:[]
-    }
+      IsStoreDetails: false,
+      store: [],
+      index: ""
+    };
   },
   created() {
     this.asyncGetStores();
   },
-  computed:{
-    ...mapState(["rows"])
+  computed: {
+    ...mapState(["curpage", "eachpage", "rows", "maxpage", "total"])
   },
   methods: {
-    remove(index,row) {
+    remove(index, row) {
       this.$confirm("确认是否删除？", "确认信息", {
         distinguishCancelAndClose: true,
         confirmButtonText: "是",
         cancelButtonText: "否"
       })
         .then(() => {
-          this.removeiStores(row._id)
+          this.removeiStores(row._id);
           this.asyncGetStores();
           this.$message({
             type: "info",
@@ -88,15 +102,26 @@ export default {
           });
         });
     },
+    ...mapMutations(["setCurPage", "setEachPage"]),
+    handleSizeChange(val) {
+      this.setEachPage(val)
+      this.asyncGetStores();
+    },
+    handleCurrentChange(val) {
+      this.asyncGetStores({ curpage: val });
+    },
     ...mapActions(["asyncGetStores","removeiStores"]),
-    storeDetails(index, row){
-      this.store=[]
+    storeDetails(index, row) {
+      this.store = [];
       this.store.push(this.rows[index]);
-      this.IsStoreDetails=true
+      this.index = index;
+      this.IsStoreDetails = true;
     }
   }
 };
 </script>
 
 <style>
+a {
+}
 </style>
