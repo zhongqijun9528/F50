@@ -13,9 +13,6 @@ import serviceManagement from './components/serviceManagement/serviceManagement'
 import storeManagement from './components/storeManagement/storeManagement'
 import userManagement from './components/userManagement/userManagement'
 import orderManagement from './components/orderManagement/orderManagement'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(ElementUI)
 
 // 服务管理
 import addService from "./components/serviceManagement/addService";
