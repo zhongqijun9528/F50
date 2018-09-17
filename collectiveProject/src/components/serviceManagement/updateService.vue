@@ -1,8 +1,8 @@
 <template>
     <div>
-        <el-button style="margin-right:10px" @click="dialogFormVisible = true" plain type="primary" icon="el-icon-plus">新增</el-button>
-        <el-dialog :visible.sync="dialogFormVisible" title="新增服务">
-            <el-form label-width="100px" class="addServiceForm">
+        <el-button style="margin-right:10px" @click="updateBtn" plain type="primary" icon="el-icon-edit">修改</el-button>
+        <el-dialog :visible.sync="dialogFormVisible" title="修改服务">
+            <el-form :model="form" label-width="100px" class="addServiceForm">
                 <el-form-item label="爱宠类型：">
                     <el-select v-model="form.serviceName" placeholder="请选择爱宠类型">
                         <el-option label="猫猫" value="猫猫"></el-option>
@@ -17,11 +17,11 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="服务时间：">
-                    <el-time-select style="margin-right:10px" placeholder="起始时间" v-model="form.startTime" :picker-options="{start: '08:30',step: '00:15',end: '18:30'}"></el-time-select>
-                    <el-time-select placeholder="结束时间" v-model="form.endTime" :picker-options="{start: '08:30',step: '00:15',end: '18:30',minTime: form.startTime}"></el-time-select>
+                    <el-time-select style="margin-right:10px" placeholder="起始时间" v-model="startTime" :picker-options="{start: '08:30',step: '00:15',end: '18:30'}"></el-time-select>
+                    <el-time-select placeholder="结束时间" v-model="endTime" :picker-options="{start: '08:30',step: '00:15',end: '18:30',minTime: startTime}"></el-time-select>
                 </el-form-item>
                 <el-form-item label="适用体型：">
-                    <el-radio-group v-model="form.serviceCanFor">
+                     <el-radio-group v-model="form.serviceCanFor">
                         <el-radio label="迷你"></el-radio>
                         <el-radio label="小型"></el-radio>
                         <el-radio label="中型"></el-radio>
@@ -47,7 +47,7 @@
                     <el-input v-model="form.servicePrice"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="addBtn" type="primary">立即添加</el-button>
+                    <el-button @click="confirmBtn" type="primary">立即修改</el-button>
                     <el-button @click="cancelBtn">取消</el-button>
                 </el-form-item>
             </el-form>
@@ -61,42 +61,63 @@ const { mapState, mapMutations, mapActions } = createNamespacedHelpers(
   "service"
 );
 export default {
+  props: {
+    form: {
+      default: () => {
+        return {
+          serviceName: "",
+          serviceType: "",
+          serviceSchedule: "",
+          serviceCanFor: "",
+          serviceDetial: "",
+          serviceTime: "",
+          serviceLevel: "",
+          servicePrice: ""
+        };
+      }
+    }
+  },
+
   data() {
     return {
-      form: {
-        serviceName: "",
-        serviceType: "",
-        startTime: "",
-        endTime: "",
-        serviceCanFor: "",
-        serviceDetial: "",
-        serviceTime: "",
-        serviceLevel: "",
-        servicePrice: ""
-      },
+      startTime: "",
+      endTime: "",
       dialogFormVisible: false
     };
   },
-  methods: {
-    ...mapActions(["asyncAddService", "asyncGetService"]),
 
-    // 添加
-    addBtn() {
+  methods: {
+    ...mapActions(["asyncUpdateService", "asyncGetService"]),
+
+    updateBtn() {
+      if (!this.form._id) {
+        this.$message("请选择一条服务进行修改！");
+        return;
+      }
+      this.dialogFormVisible = true;
+      let time = this.form.serviceSchedule.split("-");
+      this.startTime = time[0];
+      this.endTime = time[1];
+    },
+
+    // 修改
+    confirmBtn() {
       const params = {
+        id: this.form._id,
         serviceName: this.form.serviceName,
         serviceType: this.form.serviceType,
-        serviceSchedule: `${this.form.startTime}-${this.form.endTime}`,
+        serviceSchedule: `${this.startTime}-${this.endTime}`,
         serviceCanFor: this.form.serviceCanFor,
         serviceDetial: this.form.serviceDetial,
         serviceTime: this.form.serviceTime,
         serviceLevel: this.form.serviceLevel,
         servicePrice: this.form.servicePrice
       };
-      this.asyncAddService(params);
+      this.asyncUpdateService(params);
       this.asyncGetService();
       this.$message({
         showClose: true,
-        message: "新增成功！",
+        message: "修改成功！",
         type: "success"
       });
       this.dialogFormVisible = false;

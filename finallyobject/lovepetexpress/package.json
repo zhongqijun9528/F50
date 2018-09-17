@@ -13,6 +13,8 @@
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
+    "multiparty": "^4.2.1",
+    "seve": "^0.6.0",
     "ykt-http-client": "^1.1.1"
   }
 }
