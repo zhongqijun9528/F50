@@ -8,7 +8,11 @@ client.url("127.0.0.1:8080");
 router.post('/show', async function (req, res, next) {
     let page = parseInt(req.body.page);
     let rows = parseInt(req.body.rows);
-    let obj = { page, rows };
+    let obj = {
+        page,
+        rows,
+        userId: req.session.storeuser._id
+    };
     if (req.body.type) {
         obj.goodsName = req.body.type;
     }
@@ -18,7 +22,8 @@ router.post('/show', async function (req, res, next) {
 
 // 新增商品
 router.post('/addGoods', async function (req, res, next) {
-    let body = req.body
+    let body = req.body;
+    body.userId = req.session.storeuser._id;
     let data = await client.post('/goods', body);
     res.send(data)
 });
@@ -38,7 +43,9 @@ router.post('/updata', async function (req, res, next) {
 
 // 上传图片
 router.post('/uploadAdd', function (req, res) {
-    let form = new multiparty.Form({ uploadDir: './public/upload' });
+    let form = new multiparty.Form({
+        uploadDir: './public/upload'
+    });
     form.parse(req, function (err, fields, files) {
         if (err) {
             res.send(err);
