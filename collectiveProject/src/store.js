@@ -10,7 +10,6 @@ export default new Vuex.Store({
   modules: {
     service,reg,
     orderManagement,
-    service,
     storeManagement
   }
 })
