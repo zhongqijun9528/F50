@@ -1,7 +1,7 @@
 <template>
     <div>
-        <el-button @click="ifShopEmployee=true" type="primary">添加服务<i class="el-icon-plus el-icon--right"></i></el-button>
-        <el-dialog title="店员" :visible.sync="ifShopEmployee" append-to-body>
+        <el-button @click="ifShopEmployee=true" type="primary">添加{{name}}<i class="el-icon-plus el-icon--right"></i></el-button>
+        <el-dialog fullscreen :title="name" :visible.sync="ifShopEmployee" append-to-body>
             <el-table @selection-change="handleSelectionChange" ref="multipleTable" tooltip-effect="dark" highlight-current-row :data="rows" border class="table">
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column prop="serviceName" label="爱宠类型"></el-table-column>
@@ -22,6 +22,8 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
             </el-pagination>
+            <el-button @click="ifShopEmployee = false">取 消</el-button>  
+            <el-button @click="confirmBtn" type="primary">确认</el-button>   
         </el-dialog>      
     </div>
 </template>
@@ -34,7 +36,8 @@ export default {
   name: "shopEmployee",
   data() {
     return {
-      ifShopEmployee: false
+      ifShopEmployee: false,
+      multipleSelection:[]
     };
   },
   computed: {
@@ -43,9 +46,27 @@ export default {
   created() {
     this.asyncGetService();
   },
+  props: {
+    name: {
+      default: ""
+    },
+    store: {
+      default: []
+    }
+  },
   methods: {
+      confirmBtn() {
+      this.asyncUpdateService({multipleSelection:this.multipleSelection,storeId:this.store[0]._id});
+      this.asyncGetService();
+      this.$message({
+        showClose: true,
+        message: "修改成功！",
+        type: "success"
+      });
+      this.ifShopEmployee = false;
+    },
     ...mapMutations(["setEachpage"]),
-    ...mapActions(["asyncGetService", "asyncDeleteService", "updateBtn"]),
+    ...mapActions(["asyncGetService","asyncUpdateService", "asyncDeleteService", "updateBtn"]),
 
     handleSizeChange(val) {
       this.setEachpage(val);

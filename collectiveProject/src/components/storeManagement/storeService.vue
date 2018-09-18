@@ -1,8 +1,8 @@
 <template>
     <div style="display: inline-block">
             <el-button @click="ifShopEmployee=true" type="primary">{{name}}<i class="el-icon-view el-icon--right"></i></el-button>
-            <el-dialog :title="name" :visible.sync="ifShopEmployee" append-to-body>
-                <el-button  type="primary">添加{{name}}<i class="el-icon-plus el-icon--right"></i></el-button>
+            <el-dialog @open="asyncGetService" fullscreen :title="name" :visible.sync="ifShopEmployee" append-to-body>
+                <addStoreService :name="name" :store="store" />
                 <el-table :data="rows" border style="width: auto">
                     <el-table-column prop="serviceName" label="爱宠类型"></el-table-column>
                     <el-table-column prop="serviceType" label="服务类型"></el-table-column>
@@ -13,15 +13,6 @@
                     <el-table-column prop="serviceLevel" label="服务员等级"></el-table-column>
                     <el-table-column prop="servicePrice" label="价格"></el-table-column>
                 </el-table>
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="curpage"
-                :page-sizes="[2,5,10,20,30]"
-                :page-size="eachpage"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total">
-            </el-pagination>    
             </el-dialog>   
     </div>
 </template>
@@ -34,39 +25,48 @@ export default {
   name: "shopEmployee",
   data() {
     return {
-      ifShopEmployee: false
+      ifShopEmployee: false,
+      curpage: 1,
+      eachpage: 5,
+      maxpage: 0,
+      rows: [],
+      total: 0
     };
   },
   props: {
     name: {
       default: ""
     },
-    store:{
-      default:[]
+    store: {
+      default: []
     }
-  },
-  computed: {
-    ...mapState(["curpage", "eachpage", "maxpage", "rows", "total"])
-  },
-  created() {
-    this.asyncGetService({storeId:this.store[0]._id});
   },
   methods: {
-    ...mapMutations(["setEachpage"]),
-    ...mapActions(["asyncGetService", "asyncDeleteService", "updateBtn"]),
-
-    handleSizeChange(val) {
-      this.setEachpage(val);
-      this.asyncGetService();
+      getStoreService(data){
+          if(data){
+             let {curpage,eachpage,maxpage,rows,total}=data;
+             this.curpage=curpage;
+             this.eachpage=eachpage;
+             this.maxpage=maxpage;
+             this.rows=rows;
+             this.total=total;
+          }
+      },
+    async asyncGetService({ curpage, eachpage } = {}) {
+      let storeId=this.store[0]._id 
+      const data = await fetch(
+        `/services?page=${curpage || this.curpage}&rows=${eachpage ||
+          this.eachpage}&storeId=${storeId ? storeId : ""}`,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      ).then(response => {
+        return response.json();
+      });
+      this.getStoreService(data)
     },
-
-    handleCurrentChange(val) {
-      this.asyncGetService({ curpage: val });
-    },
-
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    }
   }
 };
 </script>

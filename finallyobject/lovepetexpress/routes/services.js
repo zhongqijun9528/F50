@@ -7,7 +7,7 @@ client.url("localhost:8080");
 // 新增
 router.post("/", async function (req, res, next) {
   let body = req.body;
-  obj.userId=req.session.storeuser._id
+  body.userId = req.session.storeuser._id
   await client.post("/services", body);
   res.send("success");
 });
@@ -19,8 +19,11 @@ router.get("/", async function (req, res, next) {
   let page = Number(req.query.page);
   let rows = Number(req.query.rows);
   let { storeId } = req.query
-  let obj = { page, rows, storeId };
-  obj.userId=req.session.storeuser._id
+  let obj = { page, rows };
+  if (storeId) {
+    obj.storeId = storeId
+  }
+  obj.userId = req.session.storeuser._id
   if (type) {
     obj[type] = text;
   }
@@ -41,6 +44,17 @@ router.delete("/:id", async function (req, res, next) {
 router.put("/:id", async function (req, res, next) {
   let id = req.params.id;
   let body = req.body;
+  if (id == "store") {
+    let date = req.body.multipleSelection;
+    let storeId = req.body.storeId
+    for (let i = 0; i < date.length; i++) {
+      let service = await client.get("/services/" + date[i]._id);
+      storeId = storeId + ',' +service.storeId 
+      await client.put("/services/" + date[i]._id, { storeId });
+    }
+    res.send("success");
+    return
+  }
   let obj = {
     serviceName: body.serviceName,
     serviceType: body.serviceType,

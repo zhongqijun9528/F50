@@ -31,11 +31,11 @@ export default {
     },
 
     // 查询
-    async asyncGetService(context, { curpage, eachpage, type, text, storeId } = {}) {
+    async asyncGetService(context, { curpage, eachpage, type, text } = {}) {
       const data = await fetch(
         `/services?page=${curpage || context.state.curpage}&rows=${eachpage ||
         context.state.eachpage}&type=${type ? type : ""}&text=${
-        text ? text : ""}&storeId=${storeId ? storeId : ""}`,
+        text ? text : ""}`,
         {
           headers: {
             "Content-Type": "application/json"
@@ -61,7 +61,7 @@ export default {
 
     // 修改
     async asyncUpdateService(context, params) {
-      const data = await fetch(`/services/${params.id}`, {
+      const data = await fetch(`/services/${params.id?params.id:"store"}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"
