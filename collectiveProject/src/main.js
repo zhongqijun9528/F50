@@ -36,11 +36,7 @@ Vue.component('orderManagement',orderManagement)
 // 门店管理组件
 Vue.component('storeHead',storeHead)
 Vue.component('elterStore',elterStore)
-
-
 Vue.config.productionTip = false
-
-
 new Vue({
   router,
   store,
