@@ -13,29 +13,93 @@
                 <el-menu-item index="orderManagement">订单管理</el-menu-item>
                 <el-menu-item index="serviceManagement">服务管理</el-menu-item>
             </el-menu>
+            <div id="usersession">
+              <span>欢迎{{userAcount}}</span><input type="button" @click="savequit" id="sessionBtn" value="安全退出">
+            </div>
     </el-container>
+    <el-dialog
+  title="提示"
+  :visible.sync="loginDialogVisible"
+  width="30%"
+  center>
+  <span>你还没登录！</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="loginDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="loginsession">确 定</el-button>
+  </span>
+</el-dialog>
+<el-dialog
+  title="提示"
+  :visible.sync="quiteDialogVisible"
+  width="30%"
+  center>
+  <span>确认退出？</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="quiteDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="quitesession">确 定</el-button>
+  </span>
+</el-dialog>
     <router-view/>
 </div>
 </template>
 
 <script>
 export default {
-      name:"storehome",
-      //  data(){
-      //       return{
-      //           userAcount:""
-      //       }
-      //   },
-        // beforeMount() {
-        //     console.log(this.$route.params.userAcount);
-        //     this.userAcount=this.$route.params.userAcount;
-        // },
+  name: "storehome",
+  data() {
+    return {
+      userAcount: "",
+      loginDialogVisible: false,
+      quiteDialogVisible: false
+    };
+  },
+  created() {
+    this.loginedsession();
+  },
+  methods: {
+    quitesession() {
+      fetch(`/users/storelogout`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      this.$router.push("/");
+    },
+    savequit() {
+      this.quiteDialogVisible = true;
+    },
+    loginsession() {
+      this.$router.push("/");
+    },
+    async loginedsession() {
+      let data = await fetch(`/users/storeis_login`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(function(response) {
+        return response.json();
+      });
+      console.log(data);
+      if (data.isuser) {
+        this.loginDialogVisible = true;
+      } else {
+        this.userAcount = data.userAcount;
+      }
+    }
   }
+};
 </script>
 
 <style scoped>
-.el-header{
-  background-color: #42BD56;
+#usersession {
+  position: absolute;
+  right: 30px;
+  top: 25px;
+}
+.el-header {
+  background-color: #42bd56;
   color: #333;
   text-align: center;
   line-height: 60px;
@@ -55,8 +119,4 @@ export default {
   text-align: center;
   line-height: 160px;
 }
-
-
-
-
 </style>
