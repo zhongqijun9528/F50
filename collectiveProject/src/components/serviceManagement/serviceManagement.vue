@@ -93,7 +93,10 @@ export default {
               duration: 1000,
               onClose: val => {
                 let deleteNum = Math.ceil(this.total % this.eachpage);
-                if (ids.length == deleteNum || ids.length == this.eachpage) {
+                if (
+                  (this.curpage == this.maxpage && ids.length == deleteNum) ||
+                  (this.curpage == this.maxpage && ids.length == this.eachpage)
+                ) {
                   this.asyncGetService({ curpage: this.maxpage - 1 });
                 } else {
                   this.asyncGetService({ curpage: this.curpage });

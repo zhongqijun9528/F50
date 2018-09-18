@@ -2,7 +2,7 @@
     <div>
         <el-button style="margin-right:10px" @click="dialogFormVisible = true" plain type="primary" icon="el-icon-plus">新增</el-button>
         <el-dialog :visible.sync="dialogFormVisible" title="新增服务">
-            <el-form label-width="100px" class="addServiceForm">
+            <el-form :model="form" ref="form" label-width="100px" class="addServiceForm">
                 <el-form-item label="爱宠类型：">
                     <el-select v-model="form.serviceName" placeholder="请选择爱宠类型">
                         <el-option label="猫猫" value="猫猫"></el-option>
@@ -100,7 +100,7 @@ export default {
         type: "success"
       });
       this.dialogFormVisible = false;
-      this.$refs[form].resetFields();
+      this.$refs["form"].resetFields();
     },
 
     // 取消
