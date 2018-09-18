@@ -30,9 +30,7 @@ export default {
     ...mapState("reg", ["curpage", "eachpage", "maxpage", "rows", "total"])
   },
   methods: {
-     
     home() {
-         
       let arrAcount = this.rows.filter(item => {
         return item.userAcount == this.userAcount;
       });
@@ -47,24 +45,27 @@ export default {
         );
       });
       if (arrplathome.length > 0) {
-        
-        let obj={
-             userAcount:this.userAcount,
-             userPwd : this.userPwd,
-      };
-      fetch(`/users/login/?userAcount=${this.userAcount}&userPwd=${this.userPwd}`, {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        
-      }).then(function(response) {
-        return response.json();
-      }).then((data)=>{
-          if(data.length>0){
-              this.$router.push("/plathome");
+        let obj = {
+          userAcount: this.userAcount,
+          userPwd: this.userPwd
+        };
+        fetch(
+          `/users/login/?userAcount=${this.userAcount}&userPwd=${this.userPwd}`,
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
-      });
+        )
+          .then(function(response) {
+            return response.json();
+          })
+          .then(data => {
+            if (data.length > 0) {
+              this.$router.push("/plathome");
+            }
+          });
       }
       let arrstorehome = this.rows.filter(item => {
         return (
@@ -75,7 +76,28 @@ export default {
         );
       });
       if (arrstorehome.length > 0) {
-        this.$router.push("/storehome");
+        let obj = {
+          userAcount: this.userAcount,
+          userPwd: this.userPwd
+        };
+        fetch(
+          `/users/storelogin/?userAcount=${this.userAcount}&userPwd=${this.userPwd}`,
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+          .then(function(response) {
+            return response.json();
+          })
+          .then(data => {
+            
+            if (data.length > 0) {
+              this.$router.push("/storehome");
+            }
+          });
       }
     },
     reg() {
