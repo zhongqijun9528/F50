@@ -1,7 +1,7 @@
 <template>
     <div>
     <!-- 查询按钮 -->
-    <div style="margin-top: 15px;width:500px">
+    <div style="margin-top: 15px;width:500px;margin-bottom:10px">
       <el-input placeholder="请输入内容" v-model="text" class="input-with-select">
       <el-select style="width:130px" v-model="type" slot="prepend" placeholder="请选择">
         <el-option label="宠主" value="name"></el-option>
