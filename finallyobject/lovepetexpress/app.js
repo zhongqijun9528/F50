@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const session = require('express-session');
-// var ordersRouter = require('./routes/orders');
+var ordersRouter = require('./routes/orders');
 var stores= require("./routes/stores.js")
 var servicesRouter = require('./routes/services');
 
@@ -30,7 +30,7 @@ app.use(session({
 }));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/orders', ordersRouter);
+app.use('/orders', ordersRouter);
 app.use('/stores', stores);
 app.use('/services', servicesRouter);
 
