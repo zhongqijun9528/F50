@@ -55,10 +55,6 @@ export default {
       quiteDialogVisible:false,
     };
   },
-  updated() {
-    // console.log(this.$route.params.userAcount);
-    // this.userAcount=this.$route.params.userAcount;
-  },
   created() {
     this.loginedsession();
   },
