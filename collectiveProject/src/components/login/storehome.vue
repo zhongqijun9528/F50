@@ -5,7 +5,7 @@
         
             <el-menu router 
                 mode="horizontal"
-                background-color="#545c64"
+                background-color="lightblue"
                 text-color="#fff"
                 active-text-color="#ffd04b" >
                 <el-menu-item index="commodityManagement">商品管理</el-menu-item>
@@ -24,7 +24,7 @@
   center>
   <span>你还没登录！</span>
   <span slot="footer" class="dialog-footer">
-    <el-button @click="loginDialogVisible = false">取 消</el-button>
+    <el-button @click="loginsession">取 消</el-button>
     <el-button type="primary" @click="loginsession">确 定</el-button>
   </span>
 </el-dialog>
@@ -93,14 +93,16 @@ export default {
 </script>
 
 <style scoped>
+
 #usersession {
   position: absolute;
   right: 30px;
   top: 25px;
 }
+
 .el-header {
-  background-color: #42bd56;
-  color: #333;
+  background-color: pink;
+  color: violet;
   text-align: center;
   line-height: 60px;
   font-size: 25px;
