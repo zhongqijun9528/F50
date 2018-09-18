@@ -8,7 +8,7 @@
         </div>
         <el-table @selection-change="handleSelectionChange" ref="multipleTable" tooltip-effect="dark" highlight-current-row :data="rows" border class="table">
             <el-table-column type="selection"></el-table-column>
-            <el-table-column prop="serviceName" label="爱宠名称"></el-table-column>
+            <el-table-column prop="serviceName" label="爱宠类型"></el-table-column>
             <el-table-column prop="serviceType" label="服务类型"></el-table-column>
             <el-table-column prop="serviceSchedule" label="服务时间"></el-table-column>
             <el-table-column prop="serviceCanFor" label="适用体型"></el-table-column>
@@ -22,7 +22,7 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="curpage"
-                :page-sizes="[5,10,20,30]"
+                :page-sizes="[2,5,10,20,30]"
                 :page-size="eachpage"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
@@ -92,10 +92,11 @@ export default {
               message: "删除成功!",
               duration: 1000,
               onClose: val => {
-                if (this.curpage == this.maxpage) {
+                let deleteNum = Math.ceil(this.total % this.eachpage);
+                if (ids.length == deleteNum || ids.length == this.eachpage) {
                   this.asyncGetService({ curpage: this.maxpage - 1 });
                 } else {
-                  this.asyncGetService();
+                  this.asyncGetService({ curpage: this.curpage });
                 }
               }
             });
