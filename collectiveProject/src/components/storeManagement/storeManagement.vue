@@ -81,6 +81,8 @@ export default {
     ...mapState(["curpage", "eachpage", "rows", "maxpage", "total"])
   },
   methods: {
+    ...mapMutations(["setCurPage", "setEachPage"]),
+    ...mapActions(["asyncGetStores","removeiStores"]),
     remove(index, row) {
       this.$confirm("确认是否删除？", "确认信息", {
         distinguishCancelAndClose: true,
@@ -102,7 +104,6 @@ export default {
           });
         });
     },
-    ...mapMutations(["setCurPage", "setEachPage"]),
     handleSizeChange(val) {
       this.setEachPage(val)
       this.asyncGetStores();
@@ -110,7 +111,6 @@ export default {
     handleCurrentChange(val) {
       this.asyncGetStores({ curpage: val });
     },
-    ...mapActions(["asyncGetStores","removeiStores"]),
     storeDetails(index, row) {
       this.store = [];
       this.store.push(this.rows[index]);

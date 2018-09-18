@@ -16,6 +16,7 @@ export default {
         }
     },
     actions: {
+        // 查询
         async asyncGetStores(context, { curpage, eachpage, shopName, search } = {}) {
             let page = curpage || context.state.curpage;
             let rows = eachpage || context.state.eachpage;
@@ -39,6 +40,7 @@ export default {
             })
             context.commit("getStores", data);
         },
+        // 删除
         async removeiStores(context, id) {
             let data = await fetch(`/stores/removei?id=${id}`, {
                 method: "get",

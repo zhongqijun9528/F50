@@ -1,9 +1,9 @@
 <template>
     <div style="display: inline-block">
-            <el-button @click="ifShopEmployee=true" type="primary">{{name}}<i class="el-icon-view el-icon--right"></i></el-button>
-            <el-dialog @open="asyncGetService" fullscreen :title="name" :visible.sync="ifShopEmployee" append-to-body>
+            <el-button @click="lookService" type="primary">{{name}}<i class="el-icon-view el-icon--right"></i></el-button>
+            <el-dialog @open="asyncGetDataPage" fullscreen :title="name" :visible.sync="ifService" append-to-body>
                 <addStoreService :name="name" :store="store" />
-                <el-table :data="rows" border style="width: auto">
+                <el-table :data="storeServices" border style="width: auto">
                     <el-table-column prop="serviceName" label="爱宠类型"></el-table-column>
                     <el-table-column prop="serviceType" label="服务类型"></el-table-column>
                     <el-table-column prop="serviceSchedule" label="服务时间"></el-table-column>
@@ -13,24 +13,29 @@
                     <el-table-column prop="serviceLevel" label="服务员等级"></el-table-column>
                     <el-table-column prop="servicePrice" label="价格"></el-table-column>
                 </el-table>
-            </el-dialog>   
+            </el-dialog>
+            <el-dialog @open="asyncGetDataPage" fullscreen :title="name" :visible.sync="ifGoods" append-to-body>
+                <addStoreService :name="name" :store="store" />
+                <el-table :data="storeGoods" border style="width: auto">
+                    <el-table-column prop="goodsName" label="名称"></el-table-column>
+                    <el-table-column prop="goodsType" label="品类"></el-table-column>
+                    <el-table-column prop="goodsTaste" label="口味"></el-table-column>
+                    <el-table-column prop="goodsRegion" label="产地"></el-table-column>
+                    <el-table-column prop="goodsSupplier" label="供应商"></el-table-column>
+                    <el-table-column prop="goodsPrice" label="价格"></el-table-column>
+                </el-table>
+            </el-dialog>     
     </div>
 </template>
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapState, mapMutations, mapActions } = createNamespacedHelpers(
-  "service"
-);
 export default {
   name: "shopEmployee",
   data() {
     return {
-      ifShopEmployee: false,
-      curpage: 1,
-      eachpage: 5,
-      maxpage: 0,
-      rows: [],
-      total: 0
+      ifService: false,
+      ifGoods: false,
+      storeServices: [],
+      storeGoods: []
     };
   },
   props: {
@@ -42,31 +47,28 @@ export default {
     }
   },
   methods: {
-      getStoreService(data){
-          if(data){
-             let {curpage,eachpage,maxpage,rows,total}=data;
-             this.curpage=curpage;
-             this.eachpage=eachpage;
-             this.maxpage=maxpage;
-             this.rows=rows;
-             this.total=total;
-          }
-      },
-    async asyncGetService({ curpage, eachpage } = {}) {
-      let storeId=this.store[0]._id 
-      const data = await fetch(
-        `/services?page=${curpage || this.curpage}&rows=${eachpage ||
-          this.eachpage}&storeId=${storeId ? storeId : ""}`,
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
+    lookService() {
+      if (this.name == "服务") {
+        this.ifService = true;
+      } else {
+        this.ifGoods = true;
+      }
+    },
+    getStoreService({ storeServices, storeGoods } = {}) {
+      this.storeServices = storeServices;
+      this.storeGoods = storeGoods;
+    },
+    async asyncGetDataPage() {
+      let storeId = this.store[0]._id;
+      const data = await fetch(`/stores/${storeId}`, {
+        headers: {
+          "Content-Type": "application/json"
         }
-      ).then(response => {
+      }).then(response => {
         return response.json();
       });
-      this.getStoreService(data)
-    },
+      this.getStoreService(data);
+    }
   }
 };
 </script>

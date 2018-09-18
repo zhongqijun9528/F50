@@ -1,8 +1,8 @@
 <template>
     <div>
-        <el-button @click="ifShopEmployee=true" type="primary">添加{{name}}<i class="el-icon-plus el-icon--right"></i></el-button>
-        <el-dialog fullscreen :title="name" :visible.sync="ifShopEmployee" append-to-body>
-            <el-table @selection-change="handleSelectionChange" ref="multipleTable" tooltip-effect="dark" highlight-current-row :data="rows" border class="table">
+        <el-button @click="lookService" type="primary">添加{{name}}<i class="el-icon-plus el-icon--right"></i></el-button>
+        <el-dialog @open="asyncGetDataPage" fullscreen :title="name" :visible.sync="ifService" append-to-body>
+            <el-table @selection-change="handleSelectionChange" ref="multipleTable" tooltip-effect="dark" highlight-current-row :data="storeServices" border class="table">
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column prop="serviceName" label="爱宠类型"></el-table-column>
                 <el-table-column prop="serviceType" label="服务类型"></el-table-column>
@@ -13,16 +13,20 @@
                 <el-table-column prop="serviceLevel" label="服务员等级"></el-table-column>
                 <el-table-column prop="servicePrice" label="价格"></el-table-column>
             </el-table>
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="curpage"
-                :page-sizes="[2,5,10,20,30]"
-                :page-size="eachpage"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total">
-            </el-pagination>
-            <el-button @click="ifShopEmployee = false">取 消</el-button>  
+            <el-button @click="ifService = false">取 消</el-button>  
+            <el-button @click="confirmBtn" type="primary">确认</el-button>   
+        </el-dialog> 
+        <el-dialog @open="asyncGetDataPage" fullscreen :title="name" :visible.sync="ifGoods" append-to-body>
+            <el-table @selection-change="handleSelectionChange" ref="multipleTable" tooltip-effect="dark" highlight-current-row :data="storeGoods" border class="table">
+                <el-table-column type="selection"></el-table-column>
+                <el-table-column prop="goodsName" label="名称"></el-table-column>
+                <el-table-column prop="goodsType" label="品类"></el-table-column>
+                <el-table-column prop="goodsTaste" label="口味"></el-table-column>
+                <el-table-column prop="goodsRegion" label="产地"></el-table-column>
+                <el-table-column prop="goodsSupplier" label="供应商"></el-table-column>
+                <el-table-column prop="goodsPrice" label="价格"></el-table-column>
+            </el-table>
+            <el-button @click="ifGoods = false">取 消</el-button>  
             <el-button @click="confirmBtn" type="primary">确认</el-button>   
         </el-dialog>      
     </div>
@@ -36,15 +40,15 @@ export default {
   name: "shopEmployee",
   data() {
     return {
-      ifShopEmployee: false,
-      multipleSelection:[]
+      ifService: false,
+      ifGoods: false,
+      storeServices: [],
+      storeGoods: [],
+      multipleSelection: []
     };
   },
   computed: {
     ...mapState(["curpage", "eachpage", "maxpage", "rows", "total"])
-  },
-  created() {
-    this.asyncGetService();
   },
   props: {
     name: {
@@ -55,30 +59,58 @@ export default {
     }
   },
   methods: {
-      confirmBtn() {
-      this.asyncUpdateService({multipleSelection:this.multipleSelection,storeId:this.store[0]._id});
-      this.asyncGetService();
+    lookService() {
+      if (this.name == "服务") {
+        this.ifService = true;
+      } else {
+        this.ifGoods = true;
+      }
+    },
+    shutService() {
+      if (this.name == "服务") {
+        this.ifService = false;
+      } else {
+        this.ifGoods = false;
+      }
+    },
+    getStoreService({ storeServices, storeGoods } = {}) {
+      this.storeServices = storeServices;
+      this.storeGoods = storeGoods;
+    },
+    async confirmBtn() {
+      const data = await fetch(`/stores/addData`, {
+        method: "post",
+        body: JSON.stringify({
+          name:this.name,
+          storeId:this.store[0]._id,
+          arr:this.multipleSelection
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(response => {
+        return response.json();
+      });
       this.$message({
         showClose: true,
-        message: "修改成功！",
+        message: "添加成功",
         type: "success"
       });
-      this.ifShopEmployee = false;
+      this.shutService()
     },
-    ...mapMutations(["setEachpage"]),
-    ...mapActions(["asyncGetService","asyncUpdateService", "asyncDeleteService", "updateBtn"]),
-
-    handleSizeChange(val) {
-      this.setEachpage(val);
-      this.asyncGetService();
-    },
-
-    handleCurrentChange(val) {
-      this.asyncGetService({ curpage: val });
-    },
-
     handleSelectionChange(val) {
       this.multipleSelection = val;
+    },
+    async asyncGetDataPage() {
+      const data = await fetch(`/stores/data`, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(response => {
+        return response.json();
+      });
+      console.log(data)
+      this.getStoreService(data);
     }
   }
 };
