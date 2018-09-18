@@ -10,7 +10,9 @@ const session = require('express-session');
 var ordersRouter = require('./routes/orders');
 var stores= require("./routes/stores.js")
 var servicesRouter = require('./routes/services');
-var hostsRouter=require("./routes/hosts")
+var goodsRouter = require('./routes/goods');
+
+
 var app = express();
 
 // view engine setup
@@ -33,8 +35,7 @@ app.use('/users', usersRouter);
 app.use('/orders', ordersRouter);
 app.use('/stores', stores);
 app.use('/services', servicesRouter);
-app.use('/hosts', hostsRouter);
-
+app.use('/goods', goodsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
