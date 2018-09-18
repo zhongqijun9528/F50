@@ -84,7 +84,7 @@ export default {
       }).then(function(response) {
         return response.json();
       });
-      console.log(data);
+      // console.log(data);
       if (data.isuser) {
        this.loginDialogVisible=true;
       }else{
