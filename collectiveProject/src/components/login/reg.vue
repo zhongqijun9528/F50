@@ -34,7 +34,7 @@ export default {
       userMail:"",
       userPwd:"",
       userType:"1",
-      userStatus:"2",
+      userStatus:"1",
     }
   },
   created() {
