@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-container>
-        <el-header>爱宠帮后台管理系统
+        <el-header>爱宠帮平台管理系统
           
          
         </el-header>

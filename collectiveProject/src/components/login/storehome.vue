@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-container>
-        <el-header>爱宠帮后台管理系统</el-header>
+        <el-header>爱宠帮门店管理系统</el-header>
         
             <el-menu router 
                 mode="horizontal"
