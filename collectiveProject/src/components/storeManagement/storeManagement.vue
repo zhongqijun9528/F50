@@ -18,8 +18,8 @@
     </el-table>
 <!-- 门店的详情 -->
 <el-dialog fullscreen title="门店详情" :visible.sync="IsStoreDetails">
-  <el-button  type="primary">添加服务<i class="el-icon-plus el-icon--right"></i></el-button>
-  <el-button  type="primary">添加商品<i class="el-icon-plus el-icon--right"></i></el-button>
+  <storeService :store="store" name="商品"/>
+  <storeService :store="store" name="服务"/>
   <el-table :data="store" border>
     <el-table-column prop="shopName" label="店名"></el-table-column>
     <el-table-column prop="_id" label="营业执照号" width="180"></el-table-column>

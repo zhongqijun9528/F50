@@ -7,7 +7,7 @@
       <el-button style="margin:10px;height:40px" @click="addStore = true" type="primary">新增门店<i class="el-icon-plus el-icon--right"></i></el-button>
 </el-button-group>
 <!-- 新增门店 -->
-<el-dialog fullscreen title="新增门店" :visible.sync="addStore">
+<el-dialog title="新增门店" :visible.sync="addStore">
  <el-form ref="form" label-width="80px" size="mini">
     <el-form-item label="门店名字">
         <el-input v-model="shopName" style="width:300px" ></el-input>

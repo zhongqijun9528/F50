@@ -13,6 +13,8 @@ import shopEmployee from "./components/storeManagement/shopEmployee.vue"
 import elterStore from "./components/storeManagement/elterStore.vue"
 import serviceManagement from './components/serviceManagement/serviceManagement'
 import storeManagement from './components/storeManagement/storeManagement'
+import addStoreService from './components/storeManagement/addStoreService'
+import storeService from './components/storeManagement/storeService'
 import userManagement from './components/userManagement/userManagement'
 import orderManagement from './components/orderManagement/orderManagement'
 
@@ -36,6 +38,9 @@ Vue.component('orderManagement',orderManagement)
 // 门店管理组件
 Vue.component('storeHead',storeHead)
 Vue.component('elterStore',elterStore)
+Vue.component('addStoreService',addStoreService)
+Vue.component('storeService',storeService)
+
 Vue.config.productionTip = false
 new Vue({
   router,

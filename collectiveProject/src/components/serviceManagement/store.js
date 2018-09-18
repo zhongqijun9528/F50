@@ -31,12 +31,11 @@ export default {
     },
 
     // 查询
-    async asyncGetService(context, { curpage, eachpage, type, text } = {}) {
+    async asyncGetService(context, { curpage, eachpage, type, text, storeId } = {}) {
       const data = await fetch(
         `/services?page=${curpage || context.state.curpage}&rows=${eachpage ||
-          context.state.eachpage}&type=${type ? type : ""}&text=${
-          text ? text : ""
-        }`,
+        context.state.eachpage}&type=${type ? type : ""}&text=${
+        text ? text : ""}&storeId=${storeId ? storeId : ""}`,
         {
           headers: {
             "Content-Type": "application/json"
