@@ -4,6 +4,8 @@ import orderManagement from './components/orderManagement/store'
 import service from "./components/serviceManagement/store";
 import reg from "./components/login/store";
 import storeManagement from "./components/storeManagement/store.js"
+import favouriteManagement from "./components/favouriteManagement/store"
+import commodityManagement from "./components/commodityManagement/store"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -11,6 +13,8 @@ export default new Vuex.Store({
     reg,
     service,
     orderManagement,
-    storeManagement
+    storeManagement,
+    favouriteManagement,
+    commodityManagement
   }
 })

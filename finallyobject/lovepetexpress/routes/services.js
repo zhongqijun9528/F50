@@ -7,7 +7,7 @@ client.url("localhost:8080");
 // 新增
 router.post("/", async function (req, res, next) {
   let body = req.body;
-  console.log(body);
+  obj.userId=req.session.storeuser._id
   await client.post("/services", body);
   res.send("success");
 });
@@ -20,6 +20,7 @@ router.get("/", async function (req, res, next) {
   let rows = Number(req.query.rows);
   let { storeId } = req.query
   let obj = { page, rows, storeId };
+  obj.userId=req.session.storeuser._id
   if (type) {
     obj[type] = text;
   }
