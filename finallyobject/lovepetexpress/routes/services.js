@@ -5,20 +5,24 @@ const client = require("ykt-http-client");
 client.url("localhost:8080");
 
 // 新增
-router.post("/", async function(req, res, next) {
+router.post("/", async function (req, res, next) {
   let body = req.body;
-  console.log(body);
+  body.userId = req.session.storeuser._id;
   await client.post("/services", body);
   res.send("success");
 });
 
 // 查询
-router.get("/", async function(req, res, next) {
+router.get("/", async function (req, res, next) {
   let type = req.query.type;
   let text = req.query.text;
   let page = Number(req.query.page);
   let rows = Number(req.query.rows);
-  let obj = { page, rows };
+  let obj = {
+    page,
+    rows,
+    userId: req.session.storeuser._id
+  };
   if (type) {
     obj[type] = text;
   }
@@ -27,7 +31,7 @@ router.get("/", async function(req, res, next) {
 });
 
 // 删除
-router.delete("/:id", async function(req, res, next) {
+router.delete("/:id", async function (req, res, next) {
   let ids = req.params.id.split(",");
   for (let item of ids) {
     await client.delete("/services/" + item);
@@ -36,7 +40,7 @@ router.delete("/:id", async function(req, res, next) {
 });
 
 // 修改
-router.put("/:id", async function(req, res, next) {
+router.put("/:id", async function (req, res, next) {
   let id = req.params.id;
   let body = req.body;
   let obj = {
