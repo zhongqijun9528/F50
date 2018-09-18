@@ -12,6 +12,8 @@ import orderManagement from "./components/orderManagement/orderManagement.vue";
 
 import reg from "./components/login/reg.vue"
 import plathome from "./components/login/plathome.vue"
+import storehome from "./components/login/storehome.vue"
+
 
 
 Vue.use(Router)
@@ -29,7 +31,11 @@ export default new Router({
       name: 'reg',
       component: reg
     },
-    
+    {
+      path: '/storehome',
+      name: 'storehome',
+      component: storehome
+    },
     {
       path: '/plathome',
       name: 'plathome',
@@ -38,39 +44,48 @@ export default new Router({
         path:"/userManagement",
         name:"userManagement",
         component: userManagement,
-      }]
+      },
+      {
+        path: "/favouriteManagement",
+        name: "favouriteManagement",
+        component: favouriteManagement
+      },]
+    },
 
-     
-    },
     {
-      path: "/commodityManagement",
-      name: "commodityManagement",
-      component: commodityManagement
+      path: '/storehome',
+      name: 'storehome',
+      component: storehome,
+      children:[
+        {
+          path: "/commodityManagement",
+          name: "commodityManagement",
+          component: commodityManagement
+        },
+        
+        {
+          path: "/serviceManagement",
+          name: "serviceManagement",
+          component: serviceManagement
+        },
+        {
+          path: "/storeManagement",
+          name: "storeManagement",
+          component: storeManagement
+        },
+        {
+          path: "/orderManagement",
+          name: "orderManagement",
+          component: orderManagement
+        }
+      ]
     },
-    {
-      path: "/favouriteManagement",
-      name: "favouriteManagement",
-      component: favouriteManagement
-    },
-    {
-      path: "/serviceManagement",
-      name: "serviceManagement",
-      component: serviceManagement
-    },
-    {
-      path: "/storeManagement",
-      name: "storeManagement",
-      component: storeManagement
-    },
+   
     // {
     //   path: "/userManagement",
     //   name: "userManagement",
     //   component: userManagement
     // },
-    {
-      path: "/orderManagement",
-      name: "orderManagement",
-      component: orderManagement
-    }
+    
   ]
 });

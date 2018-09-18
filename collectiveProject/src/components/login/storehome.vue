@@ -1,19 +1,17 @@
 <template>
 <div>
     <el-container>
-        <el-header>爱宠帮后台管理系统
-          
-         
-        </el-header>
+        <el-header>爱宠帮后台管理系统</el-header>
         
             <el-menu router 
                 mode="horizontal"
                 background-color="#545c64"
                 text-color="#fff"
                 active-text-color="#ffd04b" >
-                <el-menu-item index="userManagement">用户管理</el-menu-item>
-                <el-menu-item index="favouriteManagement">宠主管理</el-menu-item>
-                 
+                <el-menu-item index="commodityManagement">商品管理</el-menu-item>
+                <el-menu-item index="storeManagement">门店管理</el-menu-item>
+                <el-menu-item index="orderManagement">订单管理</el-menu-item>
+                <el-menu-item index="serviceManagement">服务管理</el-menu-item>
             </el-menu>
             <div id="usersession">
               <span>欢迎{{userAcount}}</span><input type="button" @click="savequit" id="sessionBtn" value="安全退出">
@@ -47,36 +45,35 @@
 
 <script>
 export default {
-  name: "plathome",
+  name: "storehome",
   data() {
     return {
       userAcount: "",
-      loginDialogVisible:false,
-      quiteDialogVisible:false,
+      loginDialogVisible: false,
+      quiteDialogVisible: false
     };
   },
   created() {
     this.loginedsession();
   },
   methods: {
-    quitesession(){
-      fetch(`/users/logout`, {
+    quitesession() {
+      fetch(`/users/storelogout`, {
         method: "get",
         headers: {
           "Content-Type": "application/json"
         }
-        })
-      this.$router.push("/");  
+      });
+      this.$router.push("/");
     },
-    savequit(){
-      this.quiteDialogVisible=true;
-      
+    savequit() {
+      this.quiteDialogVisible = true;
     },
-    loginsession(){
+    loginsession() {
       this.$router.push("/");
     },
     async loginedsession() {
-      let data = await fetch(`/users/is_login`, {
+      let data = await fetch(`/users/storeis_login`, {
         method: "get",
         headers: {
           "Content-Type": "application/json"
@@ -86,11 +83,10 @@ export default {
       });
       console.log(data);
       if (data.isuser) {
-       this.loginDialogVisible=true;
-      }else{
-          this.userAcount = data.userAcount;
+        this.loginDialogVisible = true;
+      } else {
+        this.userAcount = data.userAcount;
       }
-     
     }
   }
 };

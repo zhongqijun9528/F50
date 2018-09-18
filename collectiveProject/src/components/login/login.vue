@@ -1,10 +1,10 @@
 <template>
     <el-form  label-width="80px">
         <el-form-item label="用户名">
-            <el-input v-model="userName" style="width: 400px;"></el-input>
+            <el-input v-model="userAcount" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-            <el-input style="width: 400px;"></el-input>
+            <el-input v-model="userPwd" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="home">登录</el-button>
@@ -14,33 +14,103 @@
 </template>
 
 <script>
-     export default {
-        name:"login",
-        data(){
-            return{
-                userName:""
+import { mapActions, mapState, mapMutations } from "vuex";
+export default {
+  name: "login",
+  data() {
+    return {
+      userAcount: "",
+      userPwd: ""
+    };
+  },
+  created() {
+    this.asyncgetusers();
+  },
+  computed: {
+    ...mapState("reg", ["curpage", "eachpage", "maxpage", "rows", "total"])
+  },
+  methods: {
+    home() {
+      let arrAcount = this.rows.filter(item => {
+        return item.userAcount == this.userAcount;
+      });
+      if (arrAcount.length <= 0) {
+        alert("该账号还未注册！");
+      }
+      let arrplathome = this.rows.filter(item => {
+        return (
+          item.userAcount == this.userAcount &&
+          item.userPwd == this.userPwd &&
+          item.userType == 0
+        );
+      });
+      if (arrplathome.length > 0) {
+        let obj = {
+          userAcount: this.userAcount,
+          userPwd: this.userPwd
+        };
+        fetch(
+          `/users/login/?userAcount=${this.userAcount}&userPwd=${this.userPwd}`,
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json"
             }
-        },
-        beforeMount() {
+          }
+        )
+          .then(function(response) {
+            return response.json();
+          })
+          .then(data => {
+            if (data.length > 0) {
+              this.$router.push("/plathome");
+            }
+          });
+      }
+      let arrstorehome = this.rows.filter(item => {
+        return (
+          item.userAcount == this.userAcount &&
+          item.userPwd == this.userPwd &&
+          item.userType == 1 &&
+          item.userStatus == 0
+        );
+      });
+      if (arrstorehome.length > 0) {
+        let obj = {
+          userAcount: this.userAcount,
+          userPwd: this.userPwd
+        };
+        fetch(
+          `/users/storelogin/?userAcount=${this.userAcount}&userPwd=${this.userPwd}`,
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+          .then(function(response) {
+            return response.json();
+          })
+          .then(data => {
             
-            // this.usename=
-            // console.log(this.$route.params.username);
-            // this.username=this.$route.params.username;
-        },
-        methods:{
-            home(){
-                this.$router.push("/plathome");
-            },
-             reg(){
-                this.$router.push("/reg");
+            if (data.length > 0) {
+              this.$router.push("/storehome");
             }
-        }
-    }
+          });
+      }
+    },
+    reg() {
+      this.$router.push("/reg");
+    },
+    ...mapActions("reg", ["asyncgetusers"])
+  }
+};
 </script>
 
 <style scoped>
-    .el-form{
-        width: 500px;
-        margin: 50px auto;
-    }
+.el-form {
+  width: 500px;
+  margin: 50px auto;
+}
 </style>
