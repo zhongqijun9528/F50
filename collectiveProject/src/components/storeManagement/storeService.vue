@@ -2,7 +2,7 @@
     <div style="display: inline-block">
             <el-button @click="lookService" type="primary">{{name}}<i class="el-icon-view el-icon--right"></i></el-button>
             <el-dialog @open="asyncGetDataPage" fullscreen :title="name" :visible.sync="ifService" append-to-body>
-                <addStoreService :name="name" :store="store" />
+                <addStoreService :name="name" @click="asyncGetDataPage" :store="store" />
                 <el-table :data="storeServices" border style="width: auto">
                     <el-table-column prop="serviceName" label="爱宠类型"></el-table-column>
                     <el-table-column prop="serviceType" label="服务类型"></el-table-column>
@@ -15,7 +15,7 @@
                 </el-table>
             </el-dialog>
             <el-dialog @open="asyncGetDataPage" fullscreen :title="name" :visible.sync="ifGoods" append-to-body>
-                <addStoreService :name="name" :store="store" />
+                <addStoreService :name="name" :store="store" @click="asyncGetDataPage" />
                 <el-table :data="storeGoods" border style="width: auto">
                     <el-table-column prop="goodsName" label="名称"></el-table-column>
                     <el-table-column prop="goodsType" label="品类"></el-table-column>

@@ -14,9 +14,15 @@ router.get("/", async function (req, res, next) {
 })
 // 获取所有服务与商品
 router.get("/data", async function (req, res, next) {
-    let storeServices = await client.get("/services",{userId: req.session.storeuser._id});
-    let storeGoods = await client.get("/goods",{userId: req.session.storeuser._id});
+    let storeServices = await client.get("/services", { userId: req.session.storeuser._id });
+    let storeGoods = await client.get("/goods", { userId: req.session.storeuser._id });
     res.send({ storeServices, storeGoods });
+})
+// 删除
+router.get("/removei", async function (req, res, next) {
+    let { id } = req.query;
+    let data = await client.delete(`/stores/${id}`);
+    res.send({ data });
 })
 // 获取门店关联的服务于商品，返回数据
 router.get("/:id", async function (req, res, next) {
@@ -33,14 +39,8 @@ router.get("/:id", async function (req, res, next) {
         let goods = await client.get("/goods/" + storeGoodsIds[i], );
         storeGoods.push(goods);
     }
-    let obj={ storeServices, storeGoods }
+    let obj = { storeServices, storeGoods }
     res.send(obj);
-})
-// 删除
-router.get("/removei", async function (req, res, next) {
-    let { id } = req.query
-    let data = await client.delete(`/stores/${id}`);
-    res.send({ data });
 })
 // 增加
 router.post("/", async function (req, res, next) {

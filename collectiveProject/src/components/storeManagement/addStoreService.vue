@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-button @click="lookService" type="primary">添加{{name}}<i class="el-icon-plus el-icon--right"></i></el-button>
-        <el-dialog @open="asyncGetDataPage" fullscreen :title="name" :visible.sync="ifService" append-to-body>
+        <el-dialog @open="asyncGetDataPage" @close="click" fullscreen :title="name" :visible.sync="ifService" append-to-body>
             <el-table @selection-change="handleSelectionChange" ref="multipleTable" tooltip-effect="dark" highlight-current-row :data="storeServices" border class="table">
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column prop="serviceName" label="爱宠类型"></el-table-column>
@@ -59,6 +59,9 @@ export default {
     }
   },
   methods: {
+    click() {
+      this.$emit("click")
+    },
     lookService() {
       if (this.name == "服务") {
         this.ifService = true;

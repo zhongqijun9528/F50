@@ -91,11 +91,11 @@ export default {
       })
         .then(() => {
           this.removeiStores(row._id);
-          this.asyncGetStores();
           this.$message({
             type: "info",
             message: "已删除"
           });
+          this.asyncGetStores()
         })
         .catch(action => {
           this.$message({
