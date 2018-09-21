@@ -12,7 +12,7 @@ router.post("/", async function (req, res, next) {
   res.send("success");
 });
 
-// 查询
+// 查询（后台）
 router.get("/", async function (req, res, next) {
   let type = req.query.type;
   let text = req.query.text;
@@ -27,6 +27,12 @@ router.get("/", async function (req, res, next) {
     obj[type] = text;
   }
   let data = await client.get("/services", obj);
+  res.send(data);
+});
+
+// 查询所有服务
+router.get("/getAllServices", async function (req, res, next) {
+  let data = await client.get("/services");
   res.send(data);
 });
 
