@@ -46,6 +46,17 @@
                 <el-form-item label="价格：">
                     <el-input v-model="form.servicePrice"></el-input>
                 </el-form-item>
+                <el-form-item label="图片：">
+                    <el-upload
+                        class="avatar-uploader"
+                        action="/services/upload"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                        <img v-if="this.form.serviceImg" :src="this.form.serviceImg" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
                 <el-form-item>
                     <el-button @click="addBtn" type="primary">立即添加</el-button>
                     <el-button @click="cancelBtn">取消</el-button>
@@ -72,7 +83,8 @@ export default {
         serviceDetial: "",
         serviceTime: "",
         serviceLevel: "",
-        servicePrice: ""
+        servicePrice: "",
+        serviceImg: ""
       },
       dialogFormVisible: false
     };
@@ -90,7 +102,8 @@ export default {
         serviceDetial: this.form.serviceDetial,
         serviceTime: this.form.serviceTime,
         serviceLevel: this.form.serviceLevel,
-        servicePrice: this.form.servicePrice
+        servicePrice: this.form.servicePrice,
+        serviceImg: this.form.serviceImg
       };
       this.asyncAddService(params);
       this.asyncGetService();
@@ -106,6 +119,24 @@ export default {
     // 取消
     cancelBtn() {
       this.dialogFormVisible = false;
+    },
+
+    // 上传图片
+    handleAvatarSuccess(res, file) {
+      this.form.serviceImg = res;
+    },
+
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     }
   }
 };
@@ -115,6 +146,29 @@ export default {
 .addServiceForm {
   width: 550px;
   margin-top: 20px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
 
