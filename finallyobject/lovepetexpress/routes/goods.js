@@ -5,6 +5,14 @@ const multiparty = require('multiparty');
 client.url("127.0.0.1:8080");
 
 // 渲染商品
+router.get("/alldata",async function(req, res, next){
+    let query=req.query;
+    let page=parseInt(query.page);
+    let rows=parseInt(query.rows);
+    let obj={page,rows};
+    let data=await client.get("/goods",obj); 
+    res.send(data);
+})
 router.post('/show', async function (req, res, next) {
     let page = parseInt(req.body.page);
     let rows = parseInt(req.body.rows);

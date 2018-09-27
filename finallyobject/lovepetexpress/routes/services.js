@@ -3,7 +3,15 @@ var router = express.Router();
 
 const client = require("ykt-http-client");
 client.url("localhost:8080");
-
+//获取数据
+router.get("/alldata",async function(req, res, next){
+  let query=req.query;
+  let page=parseInt(query.page);
+  let rows=parseInt(query.rows);
+  let obj={page,rows};
+  let data=await client.get("/services",obj); 
+  res.send(data);
+})
 // 新增
 router.post("/", async function (req, res, next) {
   let body = req.body;
