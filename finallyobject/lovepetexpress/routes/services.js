@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const multiparty = require("multiparty");
 
 const client = require("ykt-http-client");
 client.url("localhost:8080");
@@ -20,12 +21,12 @@ router.post("/", async function (req, res, next) {
   res.send("success");
 });
 
-// 查询
+// 查询（后台）
 router.get("/", async function (req, res, next) {
+  let page = req.query.page;
+  let rows = req.query.rows;
   let type = req.query.type;
   let text = req.query.text;
-  let page = Number(req.query.page);
-  let rows = Number(req.query.rows);
   let obj = {
     page,
     rows,
@@ -35,6 +36,12 @@ router.get("/", async function (req, res, next) {
     obj[type] = text;
   }
   let data = await client.get("/services", obj);
+  res.send(data);
+});
+
+// 查询所有服务
+router.get("/getAllServices", async function (req, res, next) {
+  let data = await client.get("/services");
   res.send(data);
 });
 
@@ -51,18 +58,20 @@ router.delete("/:id", async function (req, res, next) {
 router.put("/:id", async function (req, res, next) {
   let id = req.params.id;
   let body = req.body;
-  let obj = {
-    serviceName: body.serviceName,
-    serviceType: body.serviceType,
-    serviceSchedule: body.serviceSchedule,
-    serviceCanFor: body.serviceCanFor,
-    serviceDetial: body.serviceDetial,
-    serviceTime: body.serviceTime,
-    serviceLevel: body.serviceLevel,
-    servicePrice: body.servicePrice
-  };
-  await client.put("/services/" + id, obj);
+  await client.put("/services/" + id, body);
   res.send("success");
+});
+
+// 上传图片
+router.post('/upload', function (req, res, next) {
+  let form = new multiparty.Form({ uploadDir: "./public/upload" });
+  form.parse(req, function (err, fields, files) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(files.file[0].path.replace("public", "").replace(/\\/g, "/"));
+    }
+  });
 });
 
 module.exports = router;
